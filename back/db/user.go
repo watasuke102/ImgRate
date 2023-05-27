@@ -11,7 +11,7 @@ func AddUser(db *sql.DB, user_name string) error {
 		return errors.New("user already exists")
 	}
 
-	res, err := db.Exec("INSERT INTO users(name, favorites) VALUES (?, '');", user_name)
+	res, err := db.Exec("INSERT INTO users(name, favorites) VALUES (?, '')", user_name)
 	if err != nil {
 		log.Println("User insert error:", err)
 		return err
@@ -27,7 +27,7 @@ func AddUser(db *sql.DB, user_name string) error {
 }
 
 func UpdateUser(db *sql.DB, user_name string, favorites string) error {
-	if UserExists(db, user_name) {
+	if !UserExists(db, user_name) {
 		return errors.New("user is not found")
 	}
 
