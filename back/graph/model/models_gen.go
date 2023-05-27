@@ -2,12 +2,6 @@
 
 package model
 
-type Comment struct {
-	ID      string  `json:"id"`
-	Name    string  `json:"name"`
-	Comment *string `json:"comment,omitempty"`
-}
-
 type NewComment struct {
 	UserName string `json:"user_name"`
 	Comment  string `json:"comment"`
@@ -18,9 +12,10 @@ type NewUser struct {
 }
 
 type User struct {
-	ID        string  `json:"id"`
-	Name      string  `json:"name"`
-	Favorites *string `json:"favorites,omitempty"`
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Favorites []*int    `json:"favorites,omitempty"`
+	Comments  []*string `json:"comments,omitempty"`
 }
 
 type UserUpdate struct {

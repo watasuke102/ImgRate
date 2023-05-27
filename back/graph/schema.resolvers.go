@@ -6,9 +6,10 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"main/db"
 	"main/graph/model"
+	"strings"
 )
 
 // CreateUser is the resolver for the create_user field.
@@ -25,16 +26,21 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdat
 	if input.Favorites != nil {
 		favorites = *input.Favorites
 	}
+	if strings.Contains(favorites, ",") {
+		return false, errors.New("comments contain invalid charcter (comma)")
+	}
 
 	if err := db.UpdateUser(r.DB, input.UserName, favorites); err != nil {
 		return false, err
 	}
-
 	return true, nil
 }
 
 // CreateComment is the resolver for the create_comment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (bool, error) {
+	if strings.Contains(input.Comment, ",") {
+		return false, errors.New("comment contain invalid charcter (comma)")
+	}
 	if err := db.AddComment(r.DB, input.UserName, input.Comment); err != nil {
 		return false, err
 	}
@@ -43,12 +49,11 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewCom
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Users - users"))
-}
-
-// Comments is the resolver for the comments field.
-func (r *queryResolver) Comments(ctx context.Context) ([]*model.Comment, error) {
-	panic(fmt.Errorf("not implemented: Comments - comments"))
+	users, err := db.GetUsers(r.DB)
+	if err != nil {
+		return nil, err
+	}
+	return users, err
 }
 
 // Mutation returns MutationResolver implementation.

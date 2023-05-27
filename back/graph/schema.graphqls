@@ -1,18 +1,12 @@
 type User {
   id: ID!
   name: String!
-  favorites: String
-}
-
-type Comment {
-  id: ID!
-  name: String!
-  comment: String
+  favorites: [Int]
+  comments: [String]
 }
 
 type Query {
   users: [User]!
-  comments: [Comment]!
 }
 
 input NewUser {
