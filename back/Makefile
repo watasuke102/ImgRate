@@ -1,5 +1,5 @@
 .PHONY: all build run gen
-all: gen build run
+all: build run
 
 build:
 	go build -o build/main

@@ -7,16 +7,34 @@ package graph
 import (
 	"context"
 	"fmt"
+	"main/db"
 	"main/graph/model"
 )
 
+// CreateUser is the resolver for the create_user field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (bool, error) {
+	if err := db.AddUser(r.DB, input.UserName); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 // UpdateUser is the resolver for the update_user field.
-func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdate) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: UpdateUser - update_user"))
+func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdate) (bool, error) {
+	favorites := ""
+	if input.Favorites != nil {
+		favorites = *input.Favorites
+	}
+
+	if err := db.UpdateUser(r.DB, input.UserName, favorites); err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 // CreateComment is the resolver for the create_comment field.
-func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (*model.Comment, error) {
+func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (bool, error) {
 	panic(fmt.Errorf("not implemented: CreateComment - create_comment"))
 }
 

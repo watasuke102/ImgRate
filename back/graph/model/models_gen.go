@@ -13,6 +13,10 @@ type NewComment struct {
 	Comment  string `json:"comment"`
 }
 
+type NewUser struct {
+	UserName string `json:"user_name"`
+}
+
 type User struct {
 	ID        string  `json:"id"`
 	Name      string  `json:"name"`

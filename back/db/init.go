@@ -1,8 +1,10 @@
-package main
+package db
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
-func DB_init(db *sql.DB) error {
+func Init(db *sql.DB) error {
 	_, err := db.Exec(`
 CREATE TABLE IF NOT EXISTS users(
   id        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -16,4 +18,9 @@ CREATE TABLE IF NOT EXISTS comments(
   comment TEXT    NOT NULL
 );`)
 	return err
+}
+
+func UserExists(db *sql.DB, user_name string) bool {
+	rows, err := db.Query("SELECT * FROM users WHERE name = ?", user_name)
+	return err == nil && rows.Next()
 }

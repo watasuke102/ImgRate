@@ -1,9 +1,10 @@
 package main
 
 import (
-	"main/graph"
 	"database/sql"
 	"log"
+	"main/db"
+	"main/graph"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -20,16 +21,21 @@ func main() {
 		log.Fatalln("Failed to get the path to Executable")
 	}
 
-	db, err := sql.Open("sqlite", filepath.Join(filepath.Dir(executable_name), "../db/sqlite.db"))
+	path := filepath.Join(filepath.Dir(executable_name), "../sqlite")
+	if err := os.Mkdir(path, 0755); err != nil && !os.IsExist(err) {
+		log.Fatalln("Failed to create 'sqlite' dir")
+	}
+
+	database, err := sql.Open("sqlite", filepath.Join(path, "sqlite.db"))
 	if err != nil {
 		log.Fatalln("Failed to open sqlite.db")
 	}
 
-	if err = DB_init(db); err != nil {
+	if err = db.Init(database); err != nil {
 		log.Fatalln("Failed to initialize DB")
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{DB: database}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

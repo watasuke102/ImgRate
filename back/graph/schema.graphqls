@@ -15,9 +15,8 @@ type Query {
   comments: [Comment]!
 }
 
-input NewComment {
+input NewUser {
   user_name: String!
-  comment: String!
 }
 
 input UserUpdate {
@@ -25,7 +24,14 @@ input UserUpdate {
   favorites: String
 }
 
+input NewComment {
+  user_name: String!
+  comment: String!
+}
+
+# if succeed, return true
 type Mutation {
-  update_user(input: UserUpdate!): User!
-  create_comment(input: NewComment!): Comment!
+  create_user(input: NewUser!): Boolean!
+  update_user(input: UserUpdate!): Boolean!
+  create_comment(input: NewComment!): Boolean!
 }
