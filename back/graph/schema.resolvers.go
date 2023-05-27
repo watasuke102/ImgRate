@@ -35,7 +35,10 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdat
 
 // CreateComment is the resolver for the create_comment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (bool, error) {
-	panic(fmt.Errorf("not implemented: CreateComment - create_comment"))
+	if err := db.AddComment(r.DB, input.UserName, input.Comment); err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // Users is the resolver for the users field.
