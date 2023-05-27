@@ -1,3 +1,10 @@
+// ImGrate - Image gallery rated by favorites and comments
+// AutosizeTextarea.tsx
+//
+// CopyRight (c) 2023 Watasuke
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {Textarea} from '@chakra-ui/react';
 import React from 'react';
 import ResizeTextarea from 'react-textarea-autosize';

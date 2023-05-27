@@ -1,3 +1,10 @@
+// ImGrate - Image gallery rated by favorites and comments
+// index.tsx
+//
+// CopyRight (c) 2023 Watasuke
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {PictureCard} from '@/components/PictureCard';
 import {SetUserNameModal} from '@/components/SetUserNameModal';
 import {get_user_name} from '@/utils/LocalStorage';

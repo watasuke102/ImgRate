@@ -1,3 +1,10 @@
+// ImGrate - Image gallery rated by favorites and comments
+// CommentModal.tsx
+//
+// CopyRight (c) 2023 Watasuke
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {CheckIcon} from '@chakra-ui/icons';
 import {
   Button,
