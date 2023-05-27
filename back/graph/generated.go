@@ -5,7 +5,6 @@ package graph
 import (
 	"bytes"
 	"context"
-	"embed"
 	"errors"
 	"fmt"
 	"main/graph/model"
@@ -228,19 +227,39 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(parsedSchema, parsedSchema.Types[name]), nil
 }
 
-//go:embed "schema.graphqls"
-var sourcesFS embed.FS
-
-func sourceData(filename string) string {
-	data, err := sourcesFS.ReadFile(filename)
-	if err != nil {
-		panic(fmt.Sprintf("codegen problem: %s not available", filename))
-	}
-	return string(data)
+var sources = []*ast.Source{
+	{Name: "../../schema.graphql", Input: `type User {
+  id: ID!
+  name: String!
+  favorites: [Int]
+  comments: [String]
 }
 
-var sources = []*ast.Source{
-	{Name: "schema.graphqls", Input: sourceData("schema.graphqls"), BuiltIn: false},
+type Query {
+  users: [User]!
+}
+
+input NewUser {
+  user_name: String!
+}
+
+input UserUpdate {
+  user_name: String!
+  favorites: String
+}
+
+input NewComment {
+  user_name: String!
+  comment: String!
+}
+
+# if succeed, return true
+type Mutation {
+  create_user(input: NewUser!): Boolean!
+  update_user(input: UserUpdate!): Boolean!
+  create_comment(input: NewComment!): Boolean!
+}
+`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
