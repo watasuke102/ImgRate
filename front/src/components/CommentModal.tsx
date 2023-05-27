@@ -9,9 +9,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
-  Textarea,
 } from '@chakra-ui/react';
 import React from 'react';
+import { AutosizeTextarea } from './AutosizeTextarea';
 
 interface Props {
   is_open: boolean;
@@ -28,7 +28,7 @@ export function CommentModal(props: Props): JSX.Element {
         <ModalCloseButton />
         <ModalHeader>Comment</ModalHeader>
         <ModalBody>
-          <Textarea value={comment} onChange={e => set_comment(e.target.value)} resize={'vertical'} />
+          <AutosizeTextarea value={comment} on_change={set_comment} />
         </ModalBody>
 
         <ModalFooter>
