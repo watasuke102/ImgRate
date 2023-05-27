@@ -16,9 +16,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	db, err := sql.Open("sqlite", filepath.Join(filepath.Dir(executable_name), "../sqlite.db"))
+	db, err := sql.Open("sqlite", filepath.Join(filepath.Dir(executable_name), "../db/sqlite.db"))
 	if err != nil {
 		fmt.Println("Failed to open sqlite.db")
+		os.Exit(1)
+	}
+
+	if err = DB_init(db); err != nil {
+		fmt.Println("Failed to initialize DB")
 		os.Exit(1)
 	}
 
