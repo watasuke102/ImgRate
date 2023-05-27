@@ -6,6 +6,11 @@ import (
 	"log"
 )
 
+func UserExists(db *sql.DB, user_name string) bool {
+	rows, err := db.Query("SELECT * FROM users WHERE name = ?", user_name)
+	return err == nil && rows.Next()
+}
+
 func AddUser(db *sql.DB, user_name string) error {
 	if UserExists(db, user_name) {
 		return errors.New("user already exists")
