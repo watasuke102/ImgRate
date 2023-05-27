@@ -5,7 +5,10 @@ export const theme = extendTheme({
     global: {
       body: {
         backgroundColor: '#d8d8d8',
-      }
-    }
-  }
+      },
+    },
+  },
+  fonts: {
+    body: '"M PLUS Rounded 1c", sans-serif',
+  },
 });
