@@ -134,7 +134,7 @@ func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 		}
 
 		users = append(users, &model.User{
-			ID:        strconv.FormatInt(user.id, 10),
+			ID:        int(user.id),
 			Name:      user.name,
 			Favorites: favorites,
 			Comments:  comments,

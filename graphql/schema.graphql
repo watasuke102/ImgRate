@@ -1,8 +1,8 @@
 type User {
-  id: ID!
+  id: Int!
   name: String!
-  favorites: [Int]
-  comments: [String]
+  favorites: [Int]!
+  comments: [String]!
 }
 
 type Query {
