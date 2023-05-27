@@ -1,11 +1,7 @@
-.PHONY: all build run gen
-all: build run
-
-build:
-	go build -o build/main
+.PHONY: all run pre_gen gen
 
 run:
-	./build/main
+	go run .
 
 # ???
 pre_gen:
