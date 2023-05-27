@@ -64,8 +64,8 @@ type UsersDB struct {
 	comments  string
 }
 
-func queryUser(db *sql.DB) ([]*UsersDB, error) {
-	rows, err := db.Query(`
+func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
+	query := `
 SELECT
 	users.id AS id,
 	users.name AS name,
@@ -73,10 +73,17 @@ SELECT
 	GROUP_CONCAT(comments.comment) AS comments
 FROM users
 LEFT OUTER JOIN comments ON users.name = comments.name
-GROUP BY users.name
-`)
+`
+	user_name := ""
+	if name != nil {
+		user_name = *name
+		query += "WHERE users.name = ?"
+	}
+	query += "\nGROUP BY users.name"
+
+	rows, err := db.Query(query, user_name)
 	if err != nil {
-		log.Println("Failed to query users")
+		log.Println("Failed to query users", err)
 		return nil, err
 	}
 
@@ -98,8 +105,8 @@ GROUP BY users.name
 	return users, nil
 }
 
-func GetUsers(db *sql.DB) ([]*model.User, error) {
-	users_db, err := queryUser(db)
+func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
+	users_db, err := queryUser(db, name)
 	if err != nil {
 		return nil, err
 	}

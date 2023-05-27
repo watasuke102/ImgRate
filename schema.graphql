@@ -6,7 +6,7 @@ type User {
 }
 
 type Query {
-  users: [User]!
+  users(name: String): [User]!
 }
 
 input NewUser {

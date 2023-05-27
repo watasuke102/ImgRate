@@ -48,8 +48,8 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewCom
 }
 
 // Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	users, err := db.GetUsers(r.DB)
+func (r *queryResolver) Users(ctx context.Context, name *string) ([]*model.User, error) {
+	users, err := db.GetUsers(r.DB, name)
 	if err != nil {
 		return nil, err
 	}
