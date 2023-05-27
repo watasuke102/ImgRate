@@ -1,10 +1,15 @@
 package main
 
 import (
+	"main/graph"
 	"database/sql"
-	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
 
 	_ "modernc.org/sqlite"
 )
@@ -12,49 +17,23 @@ import (
 func main() {
 	executable_name, err := os.Executable()
 	if err != nil {
-		fmt.Println("Failed to get the path to Executable")
-		os.Exit(1)
+		log.Fatalln("Failed to get the path to Executable")
 	}
 
 	db, err := sql.Open("sqlite", filepath.Join(filepath.Dir(executable_name), "../db/sqlite.db"))
 	if err != nil {
-		fmt.Println("Failed to open sqlite.db")
-		os.Exit(1)
+		log.Fatalln("Failed to open sqlite.db")
 	}
 
 	if err = DB_init(db); err != nil {
-		fmt.Println("Failed to initialize DB")
-		os.Exit(1)
+		log.Fatalln("Failed to initialize DB")
 	}
 
-	rows, err := db.Query("SELECT * FROM users;")
-	if err != nil {
-		fmt.Println("Failed to query 'users' table")
-		os.Exit(1)
-	}
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	for rows.Next() {
-		var i int
-		var name string
-		var favorites string
+	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.Handle("/query", srv)
 
-		if err = rows.Scan(&i, &name, &favorites); err != nil {
-			fmt.Println("Failed to scan")
-			continue
-		}
-
-		fmt.Printf("%d: name: '%s', favorites: '%s'\n", i, name, favorites)
-	}
-
-	if err = rows.Err(); err != nil {
-		fmt.Println("Error occurred during Row iteration")
-		os.Exit(1)
-	}
-
-	if err = db.Close(); err != nil {
-		fmt.Println("Failed to close DB connection")
-		os.Exit(1)
-	}
-
-	fmt.Println("Exiting...")
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", "8080")
+	log.Fatalln(http.ListenAndServe(":8080", nil))
 }

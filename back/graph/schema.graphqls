@@ -1,0 +1,31 @@
+type User {
+  id: ID!
+  name: String!
+  favorites: String
+}
+
+type Comment {
+  id: ID!
+  name: String!
+  comment: String
+}
+
+type Query {
+  users: [User]!
+  comments: [Comment]!
+}
+
+input NewComment {
+  user_name: String!
+  comment: String!
+}
+
+input UserUpdate {
+  user_name: String!
+  favorites: String
+}
+
+type Mutation {
+  update_user(input: UserUpdate!): User!
+  create_comment(input: NewComment!): Comment!
+}

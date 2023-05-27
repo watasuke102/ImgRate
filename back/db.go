@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE TABLE IF NOT EXISTS comments(
   id      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   name    TEXT    NOT NULL,
-  comment TEXT
+  comment TEXT    NOT NULL
 );`)
 	return err
 }
