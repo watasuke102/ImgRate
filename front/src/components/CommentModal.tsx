@@ -11,7 +11,7 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import React from 'react';
-import { AutosizeTextarea } from './AutosizeTextarea';
+import {AutosizeTextarea} from './AutosizeTextarea';
 
 interface Props {
   is_open: boolean;
