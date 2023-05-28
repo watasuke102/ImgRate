@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  back:
+    build: back
+    volumes:
+      - ./back/sqlite:/back/sqlite
+    ports:
+      - "8080:8080"
+
+  front:
+    image: node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/front
+    working_dir: /front
+    entrypoint: "npm run dev"
+    depends_on:
+      - back
