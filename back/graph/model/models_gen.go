@@ -12,10 +12,10 @@ type NewUser struct {
 }
 
 type User struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	Favorites []*int    `json:"favorites"`
-	Comments  []*string `json:"comments"`
+	ID        int      `json:"id"`
+	Name      string   `json:"name"`
+	Favorites []int    `json:"favorites"`
+	Comments  []string `json:"comments"`
 }
 
 type UserUpdate struct {

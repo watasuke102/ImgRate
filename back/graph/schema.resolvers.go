@@ -26,9 +26,6 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdat
 	if input.Favorites != nil {
 		favorites = *input.Favorites
 	}
-	if strings.Contains(favorites, ",") {
-		return false, errors.New("comments contain invalid charcter (comma)")
-	}
 
 	if err := db.UpdateUser(r.DB, input.UserName, favorites); err != nil {
 		return false, err

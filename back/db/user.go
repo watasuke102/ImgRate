@@ -113,24 +113,20 @@ func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 
 	users := []*model.User{}
 	for _, user := range users_db {
-		favorites := []*int{}
+		favorites := []int{}
 		for _, favorite := range strings.Split(user.favorites, ",") {
 			log.Printf("[%s] %s", user.name, favorite)
 			num_i64, err := strconv.ParseInt(favorite, 10, 32)
 			if err == nil {
-				num := int(num_i64)
-				favorites = append(favorites, &num)
+				favorites = append(favorites, int(num_i64))
 			} else {
 				log.Println(">> parse error:", err)
 			}
 		}
 
-		comments := []*string{}
+		comments := []string{}
 		if user.comments != "" {
-			for _, comment := range strings.Split(user.comments, ",") {
-				tmp := comment
-				comments = append(comments, &tmp)
-			}
+			comments = strings.Split(user.comments, ",")
 		}
 
 		users = append(users, &model.User{

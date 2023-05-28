@@ -29,8 +29,8 @@ export type QueryUsersArgs = {
 
 export type User = {
   __typename?: 'User';
-  comments: Array<Maybe<Scalars['String']['output']>>;
-  favorites: Array<Maybe<Scalars['Int']['output']>>;
+  comments: Array<Scalars['String']['output']>;
+  favorites: Array<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
 };
@@ -68,34 +68,26 @@ export type UserUpdate = {
   user_name: Scalars['String']['input'];
 };
 
-export type UsersQueryVariables = Exact<{[key: string]: never}>;
-
-export type UsersQuery = {
-  __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    name: string;
-    favorites: Array<number | null>;
-    comments: Array<string | null>;
-  } | null>;
-};
-
 export type UserNamesQueryVariables = Exact<{[key: string]: never}>;
 
 export type UserNamesQuery = {__typename?: 'Query'; users: Array<{__typename?: 'User'; name: string} | null>};
 
-export type UserByNameQueryVariables = Exact<{
-  name?: InputMaybe<Scalars['String']['input']>;
+export type UserFavoritesByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
 }>;
 
-export type UserByNameQuery = {
+export type UserFavoritesByNameQuery = {
   __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    name: string;
-    favorites: Array<number | null>;
-    comments: Array<string | null>;
-  } | null>;
+  users: Array<{__typename?: 'User'; favorites: Array<number>} | null>;
+};
+
+export type UserCommentsByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+export type UserCommentsByNameQuery = {
+  __typename?: 'Query';
+  users: Array<{__typename?: 'User'; comments: Array<string>} | null>;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -118,15 +110,6 @@ export type CreateCommentMutationVariables = Exact<{
 
 export type CreateCommentMutation = {__typename?: 'Mutation'; create_comment: boolean};
 
-export const UsersDocument = gql`
-  query Users {
-    users {
-      name
-      favorites
-      comments
-    }
-  }
-`;
 export const UserNamesDocument = gql`
   query UserNames {
     users {
@@ -134,11 +117,16 @@ export const UserNamesDocument = gql`
     }
   }
 `;
-export const UserByNameDocument = gql`
-  query UserByName($name: String) {
+export const UserFavoritesByNameDocument = gql`
+  query UserFavoritesByName($name: String!) {
     users(name: $name) {
-      name
       favorites
+    }
+  }
+`;
+export const UserCommentsByNameDocument = gql`
+  query UserCommentsByName($name: String!) {
+    users(name: $name) {
       comments
     }
   }
@@ -169,14 +157,6 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    Users(variables?: UsersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UsersQuery> {
-      return withWrapper(
-        wrappedRequestHeaders =>
-          client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}),
-        'Users',
-        'query',
-      );
-    },
     UserNames(
       variables?: UserNamesQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -188,14 +168,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'query',
       );
     },
-    UserByName(
-      variables?: UserByNameQueryVariables,
+    UserFavoritesByName(
+      variables: UserFavoritesByNameQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<UserByNameQuery> {
+    ): Promise<UserFavoritesByNameQuery> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.request<UserByNameQuery>(UserByNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}),
-        'UserByName',
+          client.request<UserFavoritesByNameQuery>(UserFavoritesByNameDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'UserFavoritesByName',
+        'query',
+      );
+    },
+    UserCommentsByName(
+      variables: UserCommentsByNameQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<UserCommentsByNameQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<UserCommentsByNameQuery>(UserCommentsByNameDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'UserCommentsByName',
         'query',
       );
     },

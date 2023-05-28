@@ -1,21 +1,17 @@
-query Users {
-  users {
-    name
-    favorites
-    comments
-  }
-}
-
 query UserNames {
   users {
     name
   }
 }
 
-query UserByName($name: String) {
+query UserFavoritesByName($name: String!) {
   users(name: $name) {
-    name
     favorites
+  }
+}
+
+query UserCommentsByName($name: String!) {
+  users(name: $name) {
     comments
   }
 }
