@@ -6,8 +6,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {set_user_name} from '@/utils/LocalStorage';
+import {useUserNames} from '@/utils/api';
 import {getSdk} from '@/utils/graphql';
-import {useUserNames} from '@/utils/users';
 import {CheckIcon} from '@chakra-ui/icons';
 import {
   Button,

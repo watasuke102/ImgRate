@@ -5,19 +5,19 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import {get_user_name} from '@/utils/LocalStorage';
+import {UserFavorites} from '@/utils/api';
+import {getSdk} from '@/utils/graphql';
 import {ChatIcon, StarIcon} from '@chakra-ui/icons';
 import {Card, CardBody, CardFooter, Image, IconButton, Button, Spacer, useDisclosure} from '@chakra-ui/react';
-import {CommentModal} from './CommentModal';
-import { UserFavorites } from '@/utils/api';
+import {GraphQLClient} from 'graphql-request';
 import React from 'react';
-import { getSdk } from '@/utils/graphql';
-import { GraphQLClient } from 'graphql-request';
-import { get_user_name } from '@/utils/LocalStorage';
+import {CommentModal} from './CommentModal';
 
 interface Props {
   img_src: string;
   index: number;
-  favorites: UserFavorites
+  favorites: UserFavorites;
 }
 
 export function PictureCard(props: Props): JSX.Element {
@@ -36,7 +36,7 @@ export function PictureCard(props: Props): JSX.Element {
     (async () => {
       const client = new GraphQLClient('http://localhost:8080/query');
       const sdk = getSdk(client);
-      await sdk.UpdateUser({ name: get_user_name() ?? '', favorites: favorite_list.sort().join(',') });
+      await sdk.UpdateUser({name: get_user_name() ?? '', favorites: favorite_list.sort().join(',')});
       props.favorites.reflesh();
       set_refleshing(false);
     })();
@@ -53,7 +53,13 @@ export function PictureCard(props: Props): JSX.Element {
             Comment
           </Button>
           <Spacer />
-          <IconButton aria-label='Favorite' icon={<StarIcon />} colorScheme={favorited? 'yellow': 'gray'} onClick={update_favorite} isLoading={refleshing} />
+          <IconButton
+            aria-label='Favorite'
+            icon={<StarIcon />}
+            colorScheme={favorited ? 'yellow' : 'gray'}
+            onClick={update_favorite}
+            isLoading={refleshing}
+          />
         </CardFooter>
       </Card>
 
