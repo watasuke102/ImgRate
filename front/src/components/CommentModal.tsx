@@ -16,9 +16,14 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
+  UseToastOptions,
+  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import {AutosizeTextarea} from './AutosizeTextarea';
+import { GraphQLClient } from 'graphql-request';
+import { getSdk } from '@/utils/graphql';
+import { get_user_name } from '@/utils/LocalStorage';
 
 interface Props {
   is_open: boolean;
@@ -27,6 +32,33 @@ interface Props {
 
 export function CommentModal(props: Props): JSX.Element {
   const [comment, set_comment] = React.useState('');
+  const toast = useToast();
+
+  const send_comment = React.useCallback(async () => {
+    const name = get_user_name();
+    if (name === null) {
+      return;
+    }
+    const client = new GraphQLClient('http://localhost:8080/query');
+    const sdk = getSdk(client);
+
+    const res = await sdk.CreateComment({ name: name, comment: comment });
+
+    const option: UseToastOptions = {
+      duration: 6000,
+      isClosable: true,
+      title: 'Failed',
+      description: 'Please try again later',
+      status: 'error',
+    };
+    if (res.create_comment) {
+      option.title = 'Success';
+      option.description = 'Your comment has been applied';
+      option.status = 'success';
+    }
+    toast(option);
+    props.close();
+  }, [comment, toast, props]);
 
   return (
     <Modal isOpen={props.is_open} onClose={props.close} closeOnEsc>
@@ -40,7 +72,7 @@ export function CommentModal(props: Props): JSX.Element {
 
         <ModalFooter>
           <Spacer />
-          <Button colorScheme='green' aria-label='Submit' leftIcon={<CheckIcon />} onClick={props.close}>
+          <Button colorScheme='green' aria-label='Submit' leftIcon={<CheckIcon />} onClick={send_comment}>
             Submit
           </Button>
         </ModalFooter>

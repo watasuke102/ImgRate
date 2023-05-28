@@ -100,6 +100,7 @@ export type UpdateUserMutation = { __typename?: 'Mutation', update_user: boolean
 
 export type CreateCommentMutationVariables = Exact<{
   name: Scalars['String']['input'];
+  comment: Scalars['String']['input'];
 }>;
 
 
@@ -135,8 +136,8 @@ export const UpdateUserDocument = gql`
 }
     `;
 export const CreateCommentDocument = gql`
-    mutation CreateComment($name: String!) {
-  create_comment(input: {user_name: "watasuke", comment: "hello comment"})
+    mutation CreateComment($name: String!, $comment: String!) {
+  create_comment(input: {user_name: $name, comment: $comment})
 }
     `;
 
