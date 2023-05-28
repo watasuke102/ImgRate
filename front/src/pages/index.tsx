@@ -28,7 +28,7 @@ export default function Home(): JSX.Element {
     })();
   }, []);
 
-  if (user_name === 0 || user_favorites.state !== 'ok') {
+  if (user_name === 0) {
     return <Loading />;
   }
 

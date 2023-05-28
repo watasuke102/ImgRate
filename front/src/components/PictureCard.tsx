@@ -58,7 +58,7 @@ export function PictureCard(props: Props): JSX.Element {
             icon={<StarIcon />}
             colorScheme={favorited ? 'yellow' : 'gray'}
             onClick={update_favorite}
-            isLoading={refleshing}
+            isLoading={refleshing || props.favorites.state !== 'ok'}
           />
         </CardFooter>
       </Card>
