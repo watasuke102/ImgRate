@@ -1,0 +1,27 @@
+query Users {
+  users {
+    name
+    favorites
+    comments
+  }
+}
+
+query UserByName($name: String) {
+  users(name: $name) {
+    name
+    favorites
+    comments
+  }
+}
+
+mutation CreateUser($name: String!) {
+  create_user(input: { user_name: $name })
+}
+
+mutation UpdateUser($name: String!, $favorites: String!) {
+  update_user(input: { user_name: $name, favorites: $favorites })
+}
+
+mutation CreateComment($name: String!) {
+  create_comment(input: { user_name: "watasuke", comment: "hello comment" })
+}
