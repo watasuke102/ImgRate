@@ -6,6 +6,12 @@ query Users {
   }
 }
 
+query UserNames {
+  users {
+    name
+  }
+}
+
 query UserByName($name: String) {
   users(name: $name) {
     name
