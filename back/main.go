@@ -21,7 +21,7 @@ func main() {
 	}
 
 	if err = db.Init(database); err != nil {
-		log.Fatalln("Failed to initialize DB")
+		log.Fatalln("Failed to initialize DB:", err)
 	}
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{DB: database}}))
