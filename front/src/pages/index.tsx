@@ -5,13 +5,14 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import { Loading } from '@/components/Loading';
 import {PictureCard} from '@/components/PictureCard';
 import {SetUserNameModal} from '@/components/SetUserNameModal';
 import {get_user_name} from '@/utils/LocalStorage';
-import {Center, SimpleGrid, Spinner} from '@chakra-ui/react';
+import {getSdk} from '@/utils/graphql';
+import {SimpleGrid} from '@chakra-ui/react';
+import {GraphQLClient} from 'graphql-request';
 import React from 'react';
-import { GraphQLClient } from 'graphql-request';
-import { getSdk } from '@/utils/graphql';
 
 export default function Home(): JSX.Element {
   // FIXME: why should I do this
@@ -25,17 +26,13 @@ export default function Home(): JSX.Element {
         console.log(name);
         const client = new GraphQLClient('http://localhost:8080/query');
         const sdk = getSdk(client);
-        console.log(await sdk.UserByName({ name: name }));
+        console.log(await sdk.UserByName({name: name}));
       }
     })();
   }, []);
 
   if (user_name === 0) {
-    return (
-      <Center width='100dvw' height='100dvh'>
-        <Spinner color='green' size='xl' />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (user_name === null) {

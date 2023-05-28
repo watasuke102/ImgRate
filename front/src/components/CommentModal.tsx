@@ -5,6 +5,8 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import {get_user_name} from '@/utils/LocalStorage';
+import {getSdk} from '@/utils/graphql';
 import {CheckIcon} from '@chakra-ui/icons';
 import {
   Button,
@@ -19,11 +21,9 @@ import {
   UseToastOptions,
   useToast,
 } from '@chakra-ui/react';
+import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {AutosizeTextarea} from './AutosizeTextarea';
-import { GraphQLClient } from 'graphql-request';
-import { getSdk } from '@/utils/graphql';
-import { get_user_name } from '@/utils/LocalStorage';
 
 interface Props {
   is_open: boolean;
@@ -42,7 +42,7 @@ export function CommentModal(props: Props): JSX.Element {
     const client = new GraphQLClient('http://localhost:8080/query');
     const sdk = getSdk(client);
 
-    const res = await sdk.CreateComment({ name: name, comment: comment });
+    const res = await sdk.CreateComment({name: name, comment: comment});
 
     const option: UseToastOptions = {
       duration: 6000,
