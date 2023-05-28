@@ -24,14 +24,14 @@ export function PictureCard(props: Props): JSX.Element {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [refleshing, set_refleshing] = React.useState(false);
 
-  const favorited = props.favorites.data.indexOf(props.index) !== -1;
+  const favorited = props.favorites.favorites.indexOf(props.index) !== -1;
   const update_favorite = React.useCallback(() => {
     set_refleshing(true);
     let favorite_list: number[];
     if (favorited) {
-      favorite_list = props.favorites.data.filter(e => e !== props.index);
+      favorite_list = props.favorites.favorites.filter(e => e !== props.index);
     } else {
-      favorite_list = props.favorites.data.concat([props.index]);
+      favorite_list = props.favorites.favorites.concat([props.index]);
     }
     (async () => {
       const client = new GraphQLClient('http://localhost:8080/query');

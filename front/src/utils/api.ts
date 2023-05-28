@@ -29,12 +29,17 @@ export function useUserNames(): string[] | undefined {
 }
 
 type UserDataState = 'ok' | 'loading' | 'err';
-interface UserData<T> {
-  data: T[];
+
+export interface UserFavorites {
+  favorites: number[];
   state: UserDataState;
   reflesh: () => void;
 }
-export type UserFavorites = UserData<number>;
+
+export interface UserComments {
+  comments: string[];
+  state: UserDataState;
+}
 
 export function useUserFavorites(): UserFavorites {
   const [data, set_data] = React.useState<number[]>([]);
@@ -56,8 +61,32 @@ export function useUserFavorites(): UserFavorites {
   }, [cnt]);
 
   return {
-    data: data,
+    favorites: data,
     state: state,
     reflesh: () => set_cnt(i => i + 1),
+  };
+}
+
+export function useUserComments(): UserComments {
+  const [data, set_data] = React.useState<string[]>([]);
+  const [state, set_state] = React.useState<UserDataState>('loading');
+
+  React.useEffect(() => {
+    (async () => {
+      const client = new GraphQLClient('http://localhost:8080/query');
+      const sdk = getSdk(client);
+      const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
+      if (res.users[0]) {
+        set_data(res.users[0].comments);
+        set_state('ok');
+      } else {
+        set_state('err');
+      }
+    })();
+  }, []);
+
+  return {
+    comments: data,
+    state: state,
   };
 }
