@@ -52,7 +52,6 @@ export function SetUserNameModal(props: Props): JSX.Element {
   }, [user_name, exist_user_names]);
 
   const on_confirmed = React.useCallback(() => {
-    console.log(user_name);
     if (user_name === '') {
       return;
     }
