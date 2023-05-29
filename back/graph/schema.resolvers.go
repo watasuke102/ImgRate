@@ -38,7 +38,7 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewCom
 	if strings.Contains(input.Comment, ",") {
 		return false, errors.New("comment contain invalid charcter (comma)")
 	}
-	if err := db.AddComment(r.DB, input.UserName, input.Comment); err != nil {
+	if err := db.AddComment(r.DB, input.CommentTo, input.UserName, input.Comment); err != nil {
 		return false, err
 	}
 	return true, nil
@@ -51,6 +51,15 @@ func (r *queryResolver) Users(ctx context.Context, name *string) ([]*model.User,
 		return nil, err
 	}
 	return users, err
+}
+
+// Comments is the resolver for the comments field.
+func (r *queryResolver) Comments(ctx context.Context, name *string) ([]*model.Comment, error) {
+	comments, err := db.GetComments(r.DB, name)
+	if err != nil {
+		return nil, err
+	}
+	return comments, err
 }
 
 // Mutation returns MutationResolver implementation.

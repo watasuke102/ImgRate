@@ -15,10 +15,11 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 CREATE TABLE IF NOT EXISTS comments(
-  id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  created_at TEXT    NOT NULL DEFAULT (DATETIME('now', '+9 hours')),
-  name       TEXT    NOT NULL,
-  comment    TEXT    NOT NULL
+  id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  created_at   TEXT    NOT NULL DEFAULT (DATETIME('now', '+9 hours')),
+  commented_to INTEGER NOT NULL,
+  name         TEXT    NOT NULL,
+  comment      TEXT    NOT NULL
 );
 `)
 	return err

@@ -2,9 +2,17 @@
 
 package model
 
+type Comment struct {
+	ID          int    `json:"id"`
+	CreatedAt   string `json:"created_at"`
+	CommentedTo int    `json:"commented_to"`
+	Comment     string `json:"comment"`
+}
+
 type NewComment struct {
-	UserName string `json:"user_name"`
-	Comment  string `json:"comment"`
+	CommentTo int    `json:"comment_to"`
+	UserName  string `json:"user_name"`
+	Comment   string `json:"comment"`
 }
 
 type NewUser struct {
@@ -12,10 +20,9 @@ type NewUser struct {
 }
 
 type User struct {
-	ID        int      `json:"id"`
-	Name      string   `json:"name"`
-	Favorites []int    `json:"favorites"`
-	Comments  []string `json:"comments"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	Favorites []int  `json:"favorites"`
 }
 
 type UserUpdate struct {

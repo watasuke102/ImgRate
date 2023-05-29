@@ -2,11 +2,18 @@ type User {
   id: Int!
   name: String!
   favorites: [Int!]!
-  comments: [String!]!
+}
+
+type Comment {
+  id: Int!
+  created_at: String!
+  commented_to: Int!
+  comment: String!
 }
 
 type Query {
   users(name: String): [User]!
+  comments(name: String): [Comment]!
 }
 
 input NewUser {
@@ -19,6 +26,7 @@ input UserUpdate {
 }
 
 input NewComment {
+  comment_to: Int!
   user_name: String!
   comment: String!
 }

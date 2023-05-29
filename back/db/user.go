@@ -61,25 +61,15 @@ type UsersDB struct {
 	id        int64
 	name      string
 	favorites string
-	comments  string
 }
 
 func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
-	query := `
-SELECT
-	users.id AS id,
-	users.name AS name,
-	users.favorites AS favorites,
-	GROUP_CONCAT(comments.comment) AS comments
-FROM users
-LEFT OUTER JOIN comments ON users.name = comments.name
-`
+	query := "SELECT id, name, favorites FROM users"
 	user_name := ""
 	if name != nil {
 		user_name = *name
-		query += "WHERE users.name = ?"
+		query += "WHERE name = ?"
 	}
-	query += "\nGROUP BY users.name"
 
 	rows, err := db.Query(query, user_name)
 	if err != nil {
@@ -89,17 +79,17 @@ LEFT OUTER JOIN comments ON users.name = comments.name
 
 	var users []*UsersDB
 	for rows.Next() {
-		id, name, favorites, comments := int64(-1), "", "", ""
+		id, name, favorites := int64(-1), "", ""
 
-		err = rows.Scan(&id, &name, &favorites, &comments)
+		err = rows.Scan(&id, &name, &favorites)
 		if id == -1 || name == "" {
 			fmt.Println("Failed to scan user query", err)
 			continue
 		}
 
-		fmt.Println(id, name, favorites, comments)
+		fmt.Println(id, name, favorites)
 		users = append(users, &UsersDB{
-			id: id, name: name, favorites: favorites, comments: comments,
+			id: id, name: name, favorites: favorites,
 		})
 	}
 	return users, nil
@@ -124,16 +114,10 @@ func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 			}
 		}
 
-		comments := []string{}
-		if user.comments != "" {
-			comments = strings.Split(user.comments, ",")
-		}
-
 		users = append(users, &model.User{
 			ID:        int(user.id),
 			Name:      user.name,
 			Favorites: favorites,
-			Comments:  comments,
 		})
 	}
 

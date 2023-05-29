@@ -24,6 +24,8 @@ mutation UpdateUser($name: String!, $favorites: String!) {
   update_user(input: { user_name: $name, favorites: $favorites })
 }
 
-mutation CreateComment($name: String!, $comment: String!) {
-  create_comment(input: { user_name: $name, comment: $comment })
+mutation CreateComment($commented_to: Int!, $name: String!, $comment: String!) {
+  create_comment(
+    input: { commented_to: $commented_to, user_name: $name, comment: $comment }
+  )
 }
