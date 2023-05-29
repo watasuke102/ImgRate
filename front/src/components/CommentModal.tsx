@@ -61,7 +61,7 @@ export function CommentModal(props: Props): JSX.Element {
   }, [comment, toast, props]);
 
   return (
-    <Modal isOpen={props.is_open} onClose={props.close} closeOnEsc>
+    <Modal isOpen={props.is_open} onClose={props.close} closeOnEsc size={'xl'}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
