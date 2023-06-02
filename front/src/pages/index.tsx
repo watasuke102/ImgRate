@@ -65,7 +65,7 @@ export default function Home(props: Props): JSX.Element {
               key={i}
               img_name={name}
               favorites={user_favorites}
-              comments={user_comments.comments.filter(e => e.commented_to === name)}
+              comments={{...user_comments, comments: user_comments.comments.filter(e => e.commented_to === name)}}
             />
           ))}
         </SimpleGrid>

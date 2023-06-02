@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {get_user_name} from '@/utils/LocalStorage';
-import {Comment, getSdk} from '@/utils/graphql';
+import {getSdk} from '@/utils/graphql';
 import {CheckIcon} from '@chakra-ui/icons';
 import {
   Button,
@@ -19,6 +19,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
+  Spinner,
   Stack,
   Text,
   UseToastOptions,
@@ -28,16 +29,18 @@ import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {AutosizeTextarea} from './AutosizeTextarea';
 import {CommentTable} from './CommentTable';
+import {UserComments} from '@/utils/api';
 
 interface Props {
   img_name: string;
-  comments: Comment[];
+  comments: UserComments;
   is_open: boolean;
   close: () => void;
 }
 
 export function CommentModal(props: Props): JSX.Element {
   const [comment, set_comment] = React.useState('');
+  const [refleshing, set_refleshing] = React.useState(false);
   const toast = useToast();
 
   const send_comment = React.useCallback(async () => {
@@ -45,6 +48,7 @@ export function CommentModal(props: Props): JSX.Element {
     if (user_name === null) {
       return;
     }
+    set_refleshing(true);
     const client = new GraphQLClient('http://localhost:8080/query');
     const sdk = getSdk(client);
 
@@ -63,7 +67,10 @@ export function CommentModal(props: Props): JSX.Element {
       option.status = 'success';
     }
     toast(option);
+    props.comments.reflesh();
+    set_refleshing(false);
     props.close();
+    set_comment('');
   }, [comment, toast, props]);
 
   return (
@@ -74,11 +81,15 @@ export function CommentModal(props: Props): JSX.Element {
         <ModalHeader>Comment</ModalHeader>
         <ModalBody>
           <Stack gap={4}>
-            {props.comments.length === 0 ? (
-              <Text>There is no your comment</Text>
-            ) : (
-              <CommentTable comments={props.comments} />
-            )}
+            {(() => {
+              if (props.comments.state === 'loading') {
+                return <Spinner />;
+              }
+              if (props.comments.comments.length === 0) {
+                return <Text>There is no your comment</Text>;
+              }
+              return <CommentTable comments={props.comments.comments} />;
+            })()}
             <Heading size={'md'}>Add new comment</Heading>
             <AutosizeTextarea value={comment} on_change={set_comment} />
           </Stack>
@@ -86,7 +97,14 @@ export function CommentModal(props: Props): JSX.Element {
 
         <ModalFooter>
           <Spacer />
-          <Button colorScheme='green' aria-label='Submit' leftIcon={<CheckIcon />} onClick={send_comment}>
+          <Button
+            colorScheme='green'
+            aria-label='Submit'
+            leftIcon={<CheckIcon />}
+            onClick={send_comment}
+            isLoading={refleshing}
+            loadingText='Submitting...'
+          >
             Submit
           </Button>
         </ModalFooter>

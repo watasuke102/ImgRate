@@ -6,8 +6,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {get_user_name} from '@/utils/LocalStorage';
-import {UserFavorites} from '@/utils/api';
-import {Comment, getSdk} from '@/utils/graphql';
+import {UserComments, UserFavorites} from '@/utils/api';
+import {getSdk} from '@/utils/graphql';
 import {ChatIcon, StarIcon} from '@chakra-ui/icons';
 import {Card, CardBody, CardFooter, Image, IconButton, Button, Spacer, useDisclosure} from '@chakra-ui/react';
 import {GraphQLClient} from 'graphql-request';
@@ -16,7 +16,7 @@ import {CommentModal} from './CommentModal';
 
 interface Props {
   img_name: string;
-  comments: Comment[];
+  comments: UserComments;
   favorites: UserFavorites;
 }
 

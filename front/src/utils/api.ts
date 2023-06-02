@@ -42,6 +42,7 @@ export interface UserFavorites {
 export interface UserComments {
   comments: Comment[];
   state: UserDataState;
+  reflesh: () => void;
 }
 
 export function useUserFavorites(): UserFavorites {
@@ -76,6 +77,7 @@ export function useUserFavorites(): UserFavorites {
 export function useUserComments(): UserComments {
   const [data, set_data] = React.useState<Comment[]>([]);
   const [state, set_state] = React.useState<UserDataState>('loading');
+  const [cnt, set_cnt] = React.useState(0);
 
   React.useEffect(() => {
     (async () => {
@@ -92,10 +94,11 @@ export function useUserComments(): UserComments {
         set_state('err');
       }
     })();
-  }, []);
+  }, [cnt]);
 
   return {
     comments: data,
     state: state,
+    reflesh: () => set_cnt(i => i + 1),
   };
 }
