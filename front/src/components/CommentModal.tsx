@@ -26,6 +26,7 @@ import React from 'react';
 import {AutosizeTextarea} from './AutosizeTextarea';
 
 interface Props {
+  index: number;
   is_open: boolean;
   close: () => void;
 }
@@ -42,7 +43,7 @@ export function CommentModal(props: Props): JSX.Element {
     const client = new GraphQLClient('http://localhost:8080/query');
     const sdk = getSdk(client);
 
-    const res = await sdk.CreateComment({name: name, comment: comment});
+    const res = await sdk.CreateComment({name: name, comment_to: props.index, comment: comment});
 
     const option: UseToastOptions = {
       duration: 6000,

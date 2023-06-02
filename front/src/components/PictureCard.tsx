@@ -63,7 +63,7 @@ export function PictureCard(props: Props): JSX.Element {
         </CardFooter>
       </Card>
 
-      <CommentModal is_open={isOpen} close={onClose} />
+      <CommentModal index={props.index} is_open={isOpen} close={onClose} />
     </>
   );
 }

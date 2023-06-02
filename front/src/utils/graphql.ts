@@ -20,16 +20,28 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  comments: Array<Maybe<Comment>>;
   users: Array<Maybe<User>>;
+};
+
+export type QueryCommentsArgs = {
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryUsersArgs = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  comment: Scalars['String']['output'];
+  commented_to: Scalars['Int']['output'];
+  created_at: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+};
+
 export type User = {
   __typename?: 'User';
-  comments: Array<Scalars['String']['output']>;
   favorites: Array<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -56,6 +68,7 @@ export type MutationUpdate_UserArgs = {
 
 export type NewComment = {
   comment: Scalars['String']['input'];
+  comment_to: Scalars['Int']['input'];
   user_name: Scalars['String']['input'];
 };
 
@@ -87,7 +100,7 @@ export type UserCommentsByNameQueryVariables = Exact<{
 
 export type UserCommentsByNameQuery = {
   __typename?: 'Query';
-  users: Array<{__typename?: 'User'; comments: Array<string>} | null>;
+  comments: Array<{__typename?: 'Comment'; created_at: string; commented_to: number; comment: string} | null>;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -104,6 +117,7 @@ export type UpdateUserMutationVariables = Exact<{
 export type UpdateUserMutation = {__typename?: 'Mutation'; update_user: boolean};
 
 export type CreateCommentMutationVariables = Exact<{
+  comment_to: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   comment: Scalars['String']['input'];
 }>;
@@ -126,8 +140,10 @@ export const UserFavoritesByNameDocument = gql`
 `;
 export const UserCommentsByNameDocument = gql`
   query UserCommentsByName($name: String!) {
-    users(name: $name) {
-      comments
+    comments(name: $name) {
+      created_at
+      commented_to
+      comment
     }
   }
 `;
@@ -142,8 +158,8 @@ export const UpdateUserDocument = gql`
   }
 `;
 export const CreateCommentDocument = gql`
-  mutation CreateComment($name: String!, $comment: String!) {
-    create_comment(input: {user_name: $name, comment: $comment})
+  mutation CreateComment($comment_to: Int!, $name: String!, $comment: String!) {
+    create_comment(input: {comment_to: $comment_to, user_name: $name, comment: $comment})
   }
 `;
 
