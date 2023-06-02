@@ -33,7 +33,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 	user_name := ""
 	if name != nil {
 		user_name = *name
-		query += "WHERE name = ?"
+		query += " WHERE name = ?"
 	}
 
 	rows, err := db.Query(query, user_name)
