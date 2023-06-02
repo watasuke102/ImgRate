@@ -15,9 +15,15 @@ import {get_user_name} from '@/utils/LocalStorage';
 import {useUserFavorites} from '@/utils/api';
 import {HamburgerIcon} from '@chakra-ui/icons';
 import {Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
+import fs from 'fs';
+import {GetServerSideProps} from 'next';
 import React from 'react';
 
-export default function Home(): JSX.Element {
+interface Props {
+  file_names: string[];
+}
+
+export default function Home(props: Props): JSX.Element {
   // FIXME: why should I do this
   const [user_name, set_user_name] = React.useState<string | null | 0>(0);
   const user_favorites = useUserFavorites();
@@ -50,8 +56,8 @@ export default function Home(): JSX.Element {
           <IconButton aria-label='open profile menu' icon={<HamburgerIcon />} onClick={onOpen} />
         </Flex>
         <SimpleGrid gap={4} minChildWidth={256}>
-          {[...Array(5)].map((_, i) => (
-            <PictureCard key={i} img_src='/dummy.png' index={i} favorites={user_favorites} />
+          {props.file_names.map((name, i) => (
+            <PictureCard key={i} img_name={name} index={i} favorites={user_favorites} />
           ))}
         </SimpleGrid>
       </Container>
@@ -59,3 +65,11 @@ export default function Home(): JSX.Element {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  return {
+    props: {
+      file_names: fs.readdirSync('./public/pic').filter(name => /.+\.(png|jpg)/.test(name)),
+    },
+  };
+};
