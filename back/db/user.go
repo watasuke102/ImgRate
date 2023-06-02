@@ -3,7 +3,6 @@ package db
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 	"main/graph/model"
 	"strconv"
@@ -83,11 +82,10 @@ func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
 
 		err = rows.Scan(&id, &name, &favorites)
 		if id == -1 || name == "" {
-			fmt.Println("Failed to scan user query:", err)
+			log.Println("Failed to scan user query:", err)
 			continue
 		}
 
-		fmt.Println(id, name, favorites)
 		users = append(users, &UsersDB{
 			id: id, name: name, favorites: favorites,
 		})
@@ -105,7 +103,6 @@ func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 	for _, user := range users_db {
 		favorites := []int{}
 		for _, favorite := range strings.Split(user.favorites, ",") {
-			log.Printf("[%s] %s", user.name, favorite)
 			num_i64, err := strconv.ParseInt(favorite, 10, 32)
 			if err == nil {
 				favorites = append(favorites, int(num_i64))

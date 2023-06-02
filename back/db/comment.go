@@ -3,7 +3,6 @@ package db
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 	"main/graph/model"
 )
@@ -48,7 +47,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 
 		err = rows.Scan(&comment.ID, &comment.CreatedAt, &comment.CommentedTo, &comment.Comment)
 		if err != nil {
-			fmt.Println("Failed to scan comments query:", err)
+			log.Println("Failed to scan comments query:", err)
 			continue
 		}
 
