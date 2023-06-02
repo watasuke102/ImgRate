@@ -68,7 +68,7 @@ func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
 	user_name := ""
 	if name != nil {
 		user_name = *name
-		query += "WHERE name = ?"
+		query += " WHERE name = ?"
 	}
 
 	rows, err := db.Query(query, user_name)
