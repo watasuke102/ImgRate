@@ -59,7 +59,9 @@ export function ProfileDrawer(props: Props): JSX.Element {
               {user_comments.state === 'ok' ? (
                 user_comments.comments.map((comment, i) => (
                   <Container key={i}>
-                    <Text>{comment}</Text>
+                    <Text>
+                      {comment.commented_to}: {comment.comment} ({comment.created_at})
+                    </Text>
                   </Container>
                 ))
               ) : (

@@ -11,8 +11,10 @@ query UserFavoritesByName($name: String!) {
 }
 
 query UserCommentsByName($name: String!) {
-  users(name: $name) {
-    comments
+  comments(name: $name) {
+    created_at,
+    commented_to,
+    comment
   }
 }
 
@@ -24,8 +26,8 @@ mutation UpdateUser($name: String!, $favorites: String!) {
   update_user(input: { user_name: $name, favorites: $favorites })
 }
 
-mutation CreateComment($commented_to: Int!, $name: String!, $comment: String!) {
+mutation CreateComment($comment_to: Int!, $name: String!, $comment: String!) {
   create_comment(
-    input: { commented_to: $commented_to, user_name: $name, comment: $comment }
+    input: { comment_to: $comment_to, user_name: $name, comment: $comment }
   )
 }

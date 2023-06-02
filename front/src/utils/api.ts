@@ -8,7 +8,7 @@
 import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {get_user_name} from './LocalStorage';
-import {getSdk} from './graphql';
+import {Comment, getSdk} from './graphql';
 
 export function useUserNames(): string[] | undefined {
   const [user_names, set_user_names] = React.useState<string[] | undefined>(undefined);
@@ -37,7 +37,7 @@ export interface UserFavorites {
 }
 
 export interface UserComments {
-  comments: string[];
+  comments: Comment[];
   state: UserDataState;
 }
 
@@ -68,7 +68,7 @@ export function useUserFavorites(): UserFavorites {
 }
 
 export function useUserComments(): UserComments {
-  const [data, set_data] = React.useState<string[]>([]);
+  const [data, set_data] = React.useState<Comment[]>([]);
   const [state, set_state] = React.useState<UserDataState>('loading');
 
   React.useEffect(() => {
@@ -76,8 +76,8 @@ export function useUserComments(): UserComments {
       const client = new GraphQLClient('http://localhost:8080/query');
       const sdk = getSdk(client);
       const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
-      if (res.users[0]) {
-        set_data(res.users[0].comments);
+      if (res.comments[0]) {
+        set_data(res.comments.filter((e): e is NonNullable<Comment> => e !== null));
         set_state('ok');
       } else {
         set_state('err');
