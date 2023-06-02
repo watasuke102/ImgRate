@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import {UserAvatar} from './UserAvatar';
+import {ErrorModal} from './ErrorModal';
 
 interface Props {
   user_name: string;
@@ -37,6 +38,10 @@ interface Props {
 export function ProfileDrawer(props: Props): JSX.Element {
   const user_name_modal = useDisclosure();
   const user_comments = useUserComments();
+
+  if (user_comments.state === 'err') {
+    return <ErrorModal message='Failed to get your comments' />;
+  }
 
   return (
     <>

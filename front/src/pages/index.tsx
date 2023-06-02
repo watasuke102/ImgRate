@@ -5,6 +5,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import {ErrorModal} from '@/components/ErrorModal';
 import {Loading} from '@/components/Loading';
 import {PictureCard} from '@/components/PictureCard';
 import {ProfileDrawer} from '@/components/ProfileDrawer';
@@ -34,6 +35,10 @@ export default function Home(): JSX.Element {
 
   if (user_name === null) {
     return <SetUserNameModal is_open={true} />;
+  }
+
+  if (user_favorites.state === 'err') {
+    return <ErrorModal message='Failed to get favorite status' />;
   }
 
   return (
