@@ -12,7 +12,7 @@ import {ProfileDrawer} from '@/components/ProfileDrawer';
 import {SetUserNameModal} from '@/components/SetUserNameModal';
 import {UserAvatar} from '@/components/UserAvatar';
 import {get_user_name} from '@/utils/LocalStorage';
-import {useUserFavorites} from '@/utils/api';
+import {useUserComments, useUserFavorites} from '@/utils/api';
 import {HamburgerIcon} from '@chakra-ui/icons';
 import {Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
 import fs from 'fs';
@@ -27,6 +27,7 @@ export default function Home(props: Props): JSX.Element {
   // FIXME: why should I do this
   const [user_name, set_user_name] = React.useState<string | null | 0>(0);
   const user_favorites = useUserFavorites();
+  const user_comments = useUserComments();
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   React.useEffect(() => {
@@ -35,7 +36,7 @@ export default function Home(props: Props): JSX.Element {
     })();
   }, []);
 
-  if (user_name === 0) {
+  if (user_name === 0 || user_favorites.state === 'loading' || user_comments.state === 'loading') {
     return <Loading />;
   }
 
@@ -43,7 +44,7 @@ export default function Home(props: Props): JSX.Element {
     return <SetUserNameModal is_open={true} />;
   }
 
-  if (user_favorites.state === 'err') {
+  if (user_favorites.state === 'err' || user_comments.state === 'err') {
     return <ErrorModal message='Failed to get favorite status' />;
   }
 
@@ -57,7 +58,12 @@ export default function Home(props: Props): JSX.Element {
         </Flex>
         <SimpleGrid gap={4} minChildWidth={256}>
           {props.file_names.map((name, i) => (
-            <PictureCard key={i} img_name={name} index={i} favorites={user_favorites} />
+            <PictureCard
+              key={i}
+              img_name={name}
+              favorites={user_favorites}
+              comments={user_comments.comments.filter(e => e.commented_to === name)}
+            />
           ))}
         </SimpleGrid>
       </Container>
