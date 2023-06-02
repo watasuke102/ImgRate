@@ -1,6 +1,11 @@
 # ImGrate
 
-Image gallery rated by favorites and comments
+Image Gallery immediately rated by favorites or comments
+
+## usage
+
+1. Put your own pictures in `/front/public/pic`
+2. `docker compose up`
 
 ## LICENSE
 
