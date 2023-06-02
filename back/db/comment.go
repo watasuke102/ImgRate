@@ -38,7 +38,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 
 	rows, err := db.Query(query, user_name)
 	if err != nil {
-		log.Println("Failed to query comments", err)
+		log.Println("Failed to query comments:", err)
 		return nil, err
 	}
 
@@ -48,7 +48,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 
 		err = rows.Scan(&comment.ID, &comment.CreatedAt, &comment.CommentedTo, &comment.Comment)
 		if err != nil {
-			fmt.Println("Failed to scan comments query", err)
+			fmt.Println("Failed to scan comments query:", err)
 			continue
 		}
 

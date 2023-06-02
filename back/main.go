@@ -27,7 +27,6 @@ func main() {
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{DB: database}}))
 	cors := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
-		Debug:          true,
 	})
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))

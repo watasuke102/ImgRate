@@ -73,7 +73,7 @@ func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
 
 	rows, err := db.Query(query, user_name)
 	if err != nil {
-		log.Println("Failed to query users", err)
+		log.Println("Failed to query users:", err)
 		return nil, err
 	}
 
@@ -83,7 +83,7 @@ func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
 
 		err = rows.Scan(&id, &name, &favorites)
 		if id == -1 || name == "" {
-			fmt.Println("Failed to scan user query", err)
+			fmt.Println("Failed to scan user query:", err)
 			continue
 		}
 
