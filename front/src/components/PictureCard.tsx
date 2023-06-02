@@ -44,9 +44,9 @@ export function PictureCard(props: Props): JSX.Element {
 
   return (
     <>
-      <Card w={256} margin={'auto'}>
+      <Card w={'auto'}>
         <CardBody>
-          <Image src={`/pic/${props.img_name}`} alt='dummy' />
+          <Image objectFit={'contain'} height={256} margin={'auto'} src={`/pic/${props.img_name}`} alt='dummy' />
         </CardBody>
         <CardFooter>
           <Button aria-label='Comment' leftIcon={<ChatIcon />} onClick={onOpen}>

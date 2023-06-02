@@ -13,7 +13,7 @@ import {UserAvatar} from '@/components/UserAvatar';
 import {get_user_name} from '@/utils/LocalStorage';
 import {useUserComments, useUserFavorites} from '@/utils/api';
 import {EditIcon} from '@chakra-ui/icons';
-import {Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
+import {Card, CardBody, Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
 import fs from 'fs';
 import {GetServerSideProps} from 'next';
 import React from 'react';
@@ -50,11 +50,15 @@ export default function Home(props: Props): JSX.Element {
   return (
     <>
       <Container padding={8} maxW={'100dvw'}>
-        <Flex marginBottom={4} paddingX={2} paddingY={1} alignItems={'center'} backgroundColor='white'>
-          <UserAvatar user_name={user_name} />
-          <Spacer />
-          <IconButton aria-label='open profile menu' icon={<EditIcon />} onClick={onOpen} />
-        </Flex>
+        <Card direction={'row'} marginBottom={8}>
+          <CardBody>
+            <Flex alignItems={'center'}>
+              <UserAvatar user_name={user_name} />
+              <Spacer />
+              <IconButton aria-label='open profile menu' icon={<EditIcon />} onClick={onOpen} />
+            </Flex>
+          </CardBody>
+        </Card>
         <SimpleGrid gap={4} minChildWidth={256}>
           {props.file_names.map((name, i) => (
             <PictureCard
