@@ -34,7 +34,7 @@ export function useUserNames(): string[] | undefined {
 type UserDataState = 'ok' | 'loading' | 'err';
 
 export interface UserFavorites {
-  favorites: number[];
+  favorites: string[];
   state: UserDataState;
   reflesh: () => void;
 }
@@ -45,7 +45,7 @@ export interface UserComments {
 }
 
 export function useUserFavorites(): UserFavorites {
-  const [data, set_data] = React.useState<number[]>([]);
+  const [data, set_data] = React.useState<string[]>([]);
   const [state, set_state] = React.useState<UserDataState>('loading');
   const [cnt, set_cnt] = React.useState(0);
 

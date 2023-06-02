@@ -24,14 +24,14 @@ export function PictureCard(props: Props): JSX.Element {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [refleshing, set_refleshing] = React.useState(false);
 
-  const favorited = props.favorites.favorites.indexOf(props.index) !== -1;
+  const favorited = props.favorites.favorites.indexOf(props.img_name) !== -1;
   const update_favorite = React.useCallback(() => {
     set_refleshing(true);
-    let favorite_list: number[];
+    let favorite_list: string[];
     if (favorited) {
-      favorite_list = props.favorites.favorites.filter(e => e !== props.index);
+      favorite_list = props.favorites.favorites.filter(e => e !== props.img_name);
     } else {
-      favorite_list = props.favorites.favorites.concat([props.index]);
+      favorite_list = props.favorites.favorites.concat([props.img_name]);
     }
     (async () => {
       const client = new GraphQLClient('http://localhost:8080/query');
@@ -40,7 +40,7 @@ export function PictureCard(props: Props): JSX.Element {
       props.favorites.reflesh();
       set_refleshing(false);
     })();
-  }, [props.favorites, props.index, favorited]);
+  }, [props.favorites, props.img_name, favorited]);
 
   return (
     <>
@@ -63,7 +63,7 @@ export function PictureCard(props: Props): JSX.Element {
         </CardFooter>
       </Card>
 
-      <CommentModal index={props.index} is_open={isOpen} close={onClose} />
+      <CommentModal img_name={props.img_name} is_open={isOpen} close={onClose} />
     </>
   );
 }
