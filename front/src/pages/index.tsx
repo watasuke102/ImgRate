@@ -8,12 +8,11 @@
 import {ErrorModal} from '@/components/ErrorModal';
 import {Loading} from '@/components/Loading';
 import {PictureCard} from '@/components/PictureCard';
-import {ProfileDrawer} from '@/components/ProfileDrawer';
 import {SetUserNameModal} from '@/components/SetUserNameModal';
 import {UserAvatar} from '@/components/UserAvatar';
 import {get_user_name} from '@/utils/LocalStorage';
 import {useUserComments, useUserFavorites} from '@/utils/api';
-import {HamburgerIcon} from '@chakra-ui/icons';
+import {EditIcon} from '@chakra-ui/icons';
 import {Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
 import fs from 'fs';
 import {GetServerSideProps} from 'next';
@@ -54,7 +53,7 @@ export default function Home(props: Props): JSX.Element {
         <Flex marginBottom={4} paddingX={2} paddingY={1} alignItems={'center'} backgroundColor='white'>
           <UserAvatar user_name={user_name} />
           <Spacer />
-          <IconButton aria-label='open profile menu' icon={<HamburgerIcon />} onClick={onOpen} />
+          <IconButton aria-label='open profile menu' icon={<EditIcon />} onClick={onOpen} />
         </Flex>
         <SimpleGrid gap={4} minChildWidth={256}>
           {props.file_names.map((name, i) => (
@@ -67,7 +66,7 @@ export default function Home(props: Props): JSX.Element {
           ))}
         </SimpleGrid>
       </Container>
-      <ProfileDrawer user_name={user_name} is_open={isOpen} close={onClose} />
+      <SetUserNameModal is_open={isOpen} close={onClose} />
     </>
   );
 }
