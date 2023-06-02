@@ -14,14 +14,17 @@ export function useUserNames(): string[] | undefined {
   const [user_names, set_user_names] = React.useState<string[] | undefined>(undefined);
   React.useEffect(() => {
     (async () => {
-      const client = new GraphQLClient('http://localhost:8080/query');
-      const sdk = getSdk(client);
-      const res = await sdk.UserNames();
-      if (!res || !res.users) {
+      try {
+        const client = new GraphQLClient('http://localhost:8080/query');
+        const sdk = getSdk(client);
+        const res = await sdk.UserNames();
+        if (!res || !res.users) {
+          return;
+        }
+        set_user_names(res.users.map(u => u?.name ?? ''));
+      } catch {
         return;
       }
-
-      set_user_names(res.users.map(u => u?.name ?? ''));
     })();
   }, []);
 
@@ -48,13 +51,16 @@ export function useUserFavorites(): UserFavorites {
 
   React.useEffect(() => {
     (async () => {
-      const client = new GraphQLClient('http://localhost:8080/query');
-      const sdk = getSdk(client);
-      const res = await sdk.UserFavoritesByName({name: get_user_name() ?? ''});
-      if (res.users[0]) {
+      try {
+        const client = new GraphQLClient('http://localhost:8080/query');
+        const sdk = getSdk(client);
+        const res = await sdk.UserFavoritesByName({name: get_user_name() ?? ''});
+        if (!res.users[0]) {
+          throw Error;
+        }
         set_data(res.users[0].favorites);
         set_state('ok');
-      } else {
+      } catch {
         set_state('err');
       }
     })();
@@ -73,13 +79,16 @@ export function useUserComments(): UserComments {
 
   React.useEffect(() => {
     (async () => {
-      const client = new GraphQLClient('http://localhost:8080/query');
-      const sdk = getSdk(client);
-      const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
-      if (res.comments[0]) {
+      try {
+        const client = new GraphQLClient('http://localhost:8080/query');
+        const sdk = getSdk(client);
+        const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
+        if (!res.comments[0]) {
+          throw Error;
+        }
         set_data(res.comments.filter((e): e is NonNullable<Comment> => e !== null));
         set_state('ok');
-      } else {
+      } catch {
         set_state('err');
       }
     })();
