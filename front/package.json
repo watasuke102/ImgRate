@@ -9,7 +9,7 @@
     "gen": "gql-gen --config codegen.ts",
     "lint": "next lint",
     "fmt": "prettier --write src/",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "new": "scaffdog generate component"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
@@ -41,6 +41,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-next": "13.4.4",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "scaffdog": "^2.5.0"
   }
 }
