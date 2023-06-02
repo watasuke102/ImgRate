@@ -6,10 +6,8 @@ package graph
 
 import (
 	"context"
-	"errors"
 	"main/db"
 	"main/graph/model"
-	"strings"
 )
 
 // CreateUser is the resolver for the create_user field.
@@ -35,9 +33,6 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserUpdat
 
 // CreateComment is the resolver for the create_comment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (bool, error) {
-	if strings.Contains(input.Comment, ",") {
-		return false, errors.New("comment contain invalid charcter (comma)")
-	}
 	if err := db.AddComment(r.DB, input.CommentTo, input.UserName, input.Comment); err != nil {
 		return false, err
 	}
