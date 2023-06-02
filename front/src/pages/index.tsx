@@ -69,7 +69,7 @@ export default function Home(props: Props): JSX.Element {
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
   return {
     props: {
-      file_names: fs.readdirSync('./public/pic').filter(name => /.+\.(png|jpg)/.test(name)),
+      file_names: fs.readdirSync('./public/pic').filter(name => /[^,]+\.(png|jpg)/.test(name)),
     },
   };
 };

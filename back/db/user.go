@@ -5,7 +5,6 @@ import (
 	"errors"
 	"log"
 	"main/graph/model"
-	"strconv"
 	"strings"
 )
 
@@ -56,13 +55,8 @@ func UpdateUser(db *sql.DB, user_name string, favorites string) error {
 	return nil
 }
 
-type UsersDB struct {
-	id        int64
-	name      string
-	favorites string
-}
-
-func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
+// func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
+func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 	query := "SELECT id, name, favorites FROM users"
 	user_name := ""
 	if name != nil {
@@ -76,47 +70,19 @@ func queryUser(db *sql.DB, name *string) ([]*UsersDB, error) {
 		return nil, err
 	}
 
-	var users []*UsersDB
+	var users []*model.User
 	for rows.Next() {
-		id, name, favorites := int64(-1), "", ""
+		var user model.User
+		favorite_str := ""
 
-		err = rows.Scan(&id, &name, &favorites)
-		if id == -1 || name == "" {
+		err = rows.Scan(&user.ID, &user.Name, &favorite_str)
+		if user.ID == -1 || user.Name == "" {
 			log.Println("Failed to scan user query:", err)
 			continue
 		}
 
-		users = append(users, &UsersDB{
-			id: id, name: name, favorites: favorites,
-		})
+		user.Favorites = strings.Split(favorite_str, ",")
+		users = append(users, &user)
 	}
-	return users, nil
-}
-
-func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
-	users_db, err := queryUser(db, name)
-	if err != nil {
-		return nil, err
-	}
-
-	users := []*model.User{}
-	for _, user := range users_db {
-		favorites := []int{}
-		for _, favorite := range strings.Split(user.favorites, ",") {
-			num_i64, err := strconv.ParseInt(favorite, 10, 32)
-			if err == nil {
-				favorites = append(favorites, int(num_i64))
-			} else {
-				log.Println(">> parse error:", err)
-			}
-		}
-
-		users = append(users, &model.User{
-			ID:        int(user.id),
-			Name:      user.name,
-			Favorites: favorites,
-		})
-	}
-
 	return users, nil
 }

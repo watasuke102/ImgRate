@@ -7,12 +7,12 @@ import (
 	"main/graph/model"
 )
 
-func AddComment(db *sql.DB, comment_to int, user_name string, comment string) error {
+func AddComment(db *sql.DB, comment_to string, user_name string, comment string) error {
 	if !UserExists(db, user_name) {
 		return errors.New("user is not found")
 	}
 
-	res, err := db.Exec("INSERT INTO comments(commented_to, name, comment) VALUES (?,  ?, ?)", comment_to, user_name, comment)
+	res, err := db.Exec("INSERT INTO comments(commented_to, name, comment) VALUES (?, ?, ?)", comment_to, user_name, comment)
 	if err != nil {
 		log.Println("Comment insert error:", err)
 		return err

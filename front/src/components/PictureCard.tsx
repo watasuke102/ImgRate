@@ -15,7 +15,7 @@ import React from 'react';
 import {CommentModal} from './CommentModal';
 
 interface Props {
-  img_src: string;
+  img_name: string;
   index: number;
   favorites: UserFavorites;
 }
@@ -46,7 +46,7 @@ export function PictureCard(props: Props): JSX.Element {
     <>
       <Card w={256} margin={'auto'}>
         <CardBody>
-          <Image src={props.img_src} alt='dummy' />
+          <Image src={`/pic/${props.img_name}`} alt='dummy' />
         </CardBody>
         <CardFooter>
           <Button aria-label='Comment' leftIcon={<ChatIcon />} onClick={onOpen}>
