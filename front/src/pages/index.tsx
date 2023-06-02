@@ -44,7 +44,7 @@ export default function Home(props: Props): JSX.Element {
   }
 
   if (user_favorites.state === 'err' || user_comments.state === 'err') {
-    return <ErrorModal message='Failed to get favorite status' />;
+    return <ErrorModal message='Failed to get user data' />;
   }
 
   return (
@@ -55,7 +55,7 @@ export default function Home(props: Props): JSX.Element {
             <Flex alignItems={'center'}>
               <UserAvatar user_name={user_name} />
               <Spacer />
-              <IconButton aria-label='open profile menu' icon={<EditIcon />} onClick={onOpen} />
+              <IconButton aria-label='edit user name' icon={<EditIcon />} onClick={onOpen} />
             </Flex>
           </CardBody>
         </Card>

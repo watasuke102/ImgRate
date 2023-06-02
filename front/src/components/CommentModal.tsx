@@ -63,7 +63,7 @@ export function CommentModal(props: Props): JSX.Element {
     };
     if (res.create_comment) {
       option.title = 'Success';
-      option.description = 'Your comment has been applied';
+      option.description = 'Your comment has been sent';
       option.status = 'success';
     }
     toast(option);
@@ -86,7 +86,7 @@ export function CommentModal(props: Props): JSX.Element {
                 return <Spinner />;
               }
               if (props.comments.comments.length === 0) {
-                return <Text>There is no your comment</Text>;
+                return <Text>Your comment does not exist for now</Text>;
               }
               return <CommentTable comments={props.comments.comments} />;
             })()}
