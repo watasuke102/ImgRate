@@ -57,7 +57,7 @@ export function PictureCard(props: Props): JSX.Element {
           <IconButton
             aria-label='Favorite'
             icon={<StarIcon />}
-            colorScheme={favorited ? 'yellow' : 'gray'}
+            backgroundColor={favorited ? 'yellow.300' : ''}
             onClick={update_favorite}
             isLoading={refleshing || props.favorites.state !== 'ok'}
           />
