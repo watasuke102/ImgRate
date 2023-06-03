@@ -13,7 +13,18 @@ import {UserAvatar} from '@/components/UserAvatar';
 import {get_user_name} from '@/utils/LocalStorage';
 import {useUserComments, useUserFavorites} from '@/utils/api';
 import {EditIcon} from '@chakra-ui/icons';
-import {Card, CardBody, Container, Flex, IconButton, SimpleGrid, Spacer, useDisclosure} from '@chakra-ui/react';
+import {
+  Avatar,
+  Card,
+  CardBody,
+  Container,
+  Flex,
+  IconButton,
+  SimpleGrid,
+  Spacer,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import fs from 'fs';
 import {GetServerSideProps} from 'next';
 import React from 'react';
@@ -53,7 +64,12 @@ export default function Home(props: Props): JSX.Element {
         <Card direction={'row'} marginBottom={8}>
           <CardBody>
             <Flex alignItems={'center'}>
-              <UserAvatar user_name={user_name} />
+              <Flex gap={2}>
+                <Avatar />
+                <Text fontSize={'xl'} transform={'translateY(-2px)'} wordBreak={'break-all'}>
+                  {user_name}
+                </Text>
+              </Flex>
               <Spacer />
               <IconButton aria-label='edit user name' icon={<EditIcon />} onClick={onOpen} />
             </Flex>
