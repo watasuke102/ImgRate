@@ -47,7 +47,13 @@ export function PictureCard(props: Props): JSX.Element {
     <>
       <Card w={'auto'}>
         <CardBody>
-          <Image objectFit={'contain'} height={256} margin={'auto'} src={`/pic/${props.img_name}`} alt='dummy' />
+          <Image
+            objectFit={'contain'}
+            height={256}
+            margin={'auto'}
+            src={`/pic/${props.img_name}`}
+            alt={props.img_name}
+          />
         </CardBody>
         <CardFooter>
           <Button aria-label='Comment' leftIcon={<ChatIcon />} onClick={onOpen}>
