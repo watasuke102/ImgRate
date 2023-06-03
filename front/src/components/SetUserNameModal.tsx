@@ -52,17 +52,24 @@ export function SetUserNameModal(props: Props): JSX.Element {
   }, [user_name, exist_user_names]);
 
   const on_confirmed = React.useCallback(() => {
-    if (user_name === '') {
-      return;
+    switch (validate_input()) {
+      case 'empty':
+        return;
+      case 'exists':
+        set_user_name(user_name);
+        router.reload();
+        break;
+      case 'ok':
+        (async () => {
+          const client = new GraphQLClient('http://localhost:8080/query');
+          const sdk = getSdk(client);
+          await sdk.CreateUser({name: user_name});
+          set_user_name(user_name);
+          router.reload();
+        })();
+        break;
     }
-    set_user_name(user_name);
-    (async () => {
-      const client = new GraphQLClient('http://localhost:8080/query');
-      const sdk = getSdk(client);
-      await sdk.CreateUser({name: user_name});
-      router.reload();
-    })();
-  }, [user_name, router]);
+  }, [validate_input, user_name, router]);
 
   if (exist_user_names === undefined) {
     return <Loading />;
@@ -76,7 +83,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
         {props.close && <ModalCloseButton />}
         <ModalHeader>Please set your user name</ModalHeader>
         <ModalBody>
-          <FormControl isInvalid={validate_input() !== 'ok'}>
+          <FormControl isInvalid={validate_input() === 'empty'}>
             <Input
               value={user_name}
               onChange={e => set_user_name_state(e.target.value)}
@@ -85,7 +92,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
                 on_confirmed();
               }}
               placeholder='User name'
-              isInvalid={validate_input() !== 'ok'}
+              isInvalid={validate_input() === 'empty'}
             />
             {(() => {
               switch (validate_input()) {
@@ -94,7 +101,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
                 case 'empty':
                   return <FormErrorMessage>Empty name is not acceptable</FormErrorMessage>;
                 case 'exists':
-                  return <FormErrorMessage>That name is already used</FormErrorMessage>;
+                  return <FormHelperText color='yellow.600'>That name is already used</FormHelperText>;
               }
             })()}
           </FormControl>
@@ -107,7 +114,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
             aria-label='Confirm'
             leftIcon={<CheckIcon />}
             onClick={on_confirmed}
-            isDisabled={validate_input() !== 'ok'}
+            isDisabled={validate_input() === 'empty'}
           >
             Confirm
           </Button>
