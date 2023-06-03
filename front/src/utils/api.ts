@@ -9,13 +9,14 @@ import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {get_user_name} from './LocalStorage';
 import {Comment, ImagesQuery, getSdk} from './graphql';
+import {API_URL} from '../../env';
 
 export function useUserNames(): string[] | undefined {
   const [user_names, set_user_names] = React.useState<string[] | undefined>(undefined);
   React.useEffect(() => {
     (async () => {
       try {
-        const client = new GraphQLClient('http://localhost:8080/query');
+        const client = new GraphQLClient(API_URL);
         const sdk = getSdk(client);
         const res = await sdk.UserNames();
         if (!res || !res.users) {
@@ -59,7 +60,7 @@ export function useUserFavorites(): UserFavorites {
   React.useEffect(() => {
     (async () => {
       try {
-        const client = new GraphQLClient('http://localhost:8080/query');
+        const client = new GraphQLClient(API_URL);
         const sdk = getSdk(client);
         const res = await sdk.UserFavoritesByName({name: get_user_name() ?? ''});
         if (!res.users[0]) {
@@ -88,7 +89,7 @@ export function useUserComments(): UserComments {
   React.useEffect(() => {
     (async () => {
       try {
-        const client = new GraphQLClient('http://localhost:8080/query');
+        const client = new GraphQLClient(API_URL);
         const sdk = getSdk(client);
         const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
         if (res.comments === null) {
@@ -116,7 +117,7 @@ export function useImages(): Images {
   React.useEffect(() => {
     (async () => {
       try {
-        const client = new GraphQLClient('http://localhost:8080/query');
+        const client = new GraphQLClient(API_URL);
         const sdk = getSdk(client);
         const res = await sdk.Images();
         if (res.images === null) {

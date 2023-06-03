@@ -28,6 +28,7 @@ import {
 import {GraphQLClient} from 'graphql-request';
 import {useRouter} from 'next/router';
 import React from 'react';
+import { API_URL } from '../../../env';
 
 interface Props {
   is_open: boolean;
@@ -61,7 +62,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
         break;
       case 'ok':
         (async () => {
-          const client = new GraphQLClient('http://localhost:8080/query');
+          const client = new GraphQLClient(API_URL);
           const sdk = getSdk(client);
           await sdk.CreateUser({name: user_name});
           set_user_name(user_name);

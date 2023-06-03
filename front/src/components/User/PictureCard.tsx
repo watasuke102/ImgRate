@@ -13,6 +13,7 @@ import {Card, CardBody, CardFooter, Image, IconButton, Button, Spacer, useDisclo
 import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {CommentModal} from './CommentModal';
+import {API_URL} from '../../../sample-env';
 
 interface Props {
   img_name: string;
@@ -34,7 +35,7 @@ export function PictureCard(props: Props): JSX.Element {
       favorite_list = props.favorites.favorites.concat([props.img_name]);
     }
     (async () => {
-      const client = new GraphQLClient('http://localhost:8080/query');
+      const client = new GraphQLClient(API_URL);
       const sdk = getSdk(client);
       await sdk.UpdateUser({name: get_user_name() ?? '', favorites: favorite_list.sort().join(',')});
       props.favorites.reflesh();

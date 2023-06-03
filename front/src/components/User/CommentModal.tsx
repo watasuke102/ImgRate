@@ -30,6 +30,7 @@ import React from 'react';
 import {AutosizeTextarea} from './AutosizeTextarea';
 import {CommentTable} from './CommentTable';
 import {UserComments} from '@/utils/api';
+import {API_URL} from '../../../env';
 
 interface Props {
   img_name: string;
@@ -49,7 +50,7 @@ export function CommentModal(props: Props): JSX.Element {
       return;
     }
     set_refleshing(true);
-    const client = new GraphQLClient('http://localhost:8080/query');
+    const client = new GraphQLClient(API_URL);
     const sdk = getSdk(client);
 
     const res = await sdk.CreateComment({name: user_name, comment_to: props.img_name, comment: comment});
