@@ -85,7 +85,7 @@ export function useUserComments(): UserComments {
         const client = new GraphQLClient('http://localhost:8080/query');
         const sdk = getSdk(client);
         const res = await sdk.UserCommentsByName({name: get_user_name() ?? ''});
-        if (!res.comments[0]) {
+        if (res.comments === null) {
           throw Error;
         }
         set_data(res.comments.filter((e): e is NonNullable<Comment> => e !== null));
