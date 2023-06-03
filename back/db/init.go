@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS comments(
   id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   created_at   TEXT    NOT NULL DEFAULT (DATETIME('now', '+9 hours')),
   commented_to TEXT    NOT NULL,
-  name         TEXT    NOT NULL,
+  user_name    TEXT    NOT NULL,
   comment      TEXT    NOT NULL
 );
 `)

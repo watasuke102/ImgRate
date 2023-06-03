@@ -12,7 +12,7 @@ func AddComment(db *sql.DB, comment_to string, user_name string, comment string)
 		return errors.New("user is not found")
 	}
 
-	res, err := db.Exec("INSERT INTO comments(commented_to, name, comment) VALUES (?, ?, ?)", comment_to, user_name, comment)
+	res, err := db.Exec("INSERT INTO comments(commented_to, user_name, comment) VALUES (?, ?, ?)", comment_to, user_name, comment)
 	if err != nil {
 		log.Println("Comment insert error:", err)
 		return err
@@ -32,7 +32,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 	user_name := ""
 	if name != nil {
 		user_name = *name
-		query += " WHERE name = ?"
+		query += " WHERE user_name = ?"
 	}
 
 	rows, err := db.Query(query, user_name)
