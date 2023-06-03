@@ -10,6 +10,12 @@ type Comment struct {
 	Comment     string `json:"comment"`
 }
 
+type Image struct {
+	ImgName     string     `json:"img_name"`
+	FavoriteCnt int        `json:"favorite_cnt"`
+	Comments    []*Comment `json:"comments"`
+}
+
 type NewComment struct {
 	CommentTo string `json:"comment_to"`
 	UserName  string `json:"user_name"`

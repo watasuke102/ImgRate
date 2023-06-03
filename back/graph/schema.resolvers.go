@@ -57,6 +57,15 @@ func (r *queryResolver) Comments(ctx context.Context, name *string) ([]*model.Co
 	return comments, err
 }
 
+// Images is the resolver for the images field.
+func (r *queryResolver) Images(ctx context.Context) ([]*model.Image, error) {
+	images, err := db.GetImages(r.DB)
+	if err != nil {
+		return nil, err
+	}
+	return images, err
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 

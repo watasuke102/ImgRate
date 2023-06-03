@@ -12,9 +12,16 @@ type Comment {
   comment: String!
 }
 
+type Image {
+  img_name: String!
+  favorite_cnt: Int!
+  comments: [Comment!]!
+}
+
 type Query {
   users(name: String): [User]!
   comments(name: String): [Comment]!
+  images: [Image!]!
 }
 
 input NewUser {

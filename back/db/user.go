@@ -81,7 +81,9 @@ func GetUsers(db *sql.DB, name *string) ([]*model.User, error) {
 			continue
 		}
 
-		user.Favorites = strings.Split(favorite_str, ",")
+		if favorite_str != "" {
+			user.Favorites = strings.Split(favorite_str, ",")
+		}
 		users = append(users, &user)
 	}
 	return users, nil
