@@ -23,12 +23,12 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
-  Spinner,
 } from '@chakra-ui/react';
 import {GraphQLClient} from 'graphql-request';
 import {useRouter} from 'next/router';
 import React from 'react';
 import { API_URL } from '../../../env';
+import { Loading } from '@/common';
 
 interface Props {
   is_open: boolean;
@@ -73,7 +73,7 @@ export function SetUserNameModal(props: Props): JSX.Element {
   }, [validate_input, user_name, router]);
 
   if (exist_user_names === undefined) {
-    return <Spinner />;
+    return <Loading />;
   }
 
   return (

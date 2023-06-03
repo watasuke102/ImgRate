@@ -13,7 +13,7 @@ import {Card, CardBody, CardFooter, Image, IconButton, Button, Spacer, useDisclo
 import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {CommentModal} from './CommentModal';
-import {API_URL} from '../../../sample-env';
+import {API_URL} from '../../../env';
 
 interface Props {
   img_name: string;
