@@ -39,6 +39,7 @@ export type Comment = {
   commented_to: Scalars['String']['output'];
   created_at: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  user_name: Scalars['String']['output'];
 };
 
 export type User = {

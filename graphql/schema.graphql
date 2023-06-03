@@ -6,6 +6,7 @@ type User {
 
 type Comment {
   id: Int!
+  user_name: String!
   created_at: String!
   commented_to: String!
   comment: String!

@@ -4,6 +4,7 @@ package model
 
 type Comment struct {
 	ID          int    `json:"id"`
+	UserName    string `json:"user_name"`
 	CreatedAt   string `json:"created_at"`
 	CommentedTo string `json:"commented_to"`
 	Comment     string `json:"comment"`

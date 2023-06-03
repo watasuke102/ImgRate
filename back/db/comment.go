@@ -28,7 +28,7 @@ func AddComment(db *sql.DB, comment_to string, user_name string, comment string)
 }
 
 func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
-	query := "SELECT id, created_at, commented_to, comment FROM comments"
+	query := "SELECT id, created_at, commented_to, user_name, comment FROM comments"
 	user_name := ""
 	if name != nil {
 		user_name = *name
@@ -45,7 +45,7 @@ func GetComments(db *sql.DB, name *string) ([]*model.Comment, error) {
 	for rows.Next() {
 		var comment model.Comment
 
-		err = rows.Scan(&comment.ID, &comment.CreatedAt, &comment.CommentedTo, &comment.Comment)
+		err = rows.Scan(&comment.ID, &comment.CreatedAt, &comment.CommentedTo, &comment.UserName, &comment.Comment)
 		if err != nil {
 			log.Println("Failed to scan comments query:", err)
 			continue
