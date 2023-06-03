@@ -64,7 +64,7 @@ export default function Home(props: Props): JSX.Element {
         <Card direction={'row'} marginBottom={8}>
           <CardBody>
             <Flex alignItems={'center'}>
-              <Flex gap={2}>
+              <Flex alignItems={'center'} gap={2}>
                 <Avatar />
                 <Text fontSize={'xl'} transform={'translateY(-2px)'} wordBreak={'break-all'}>
                   {user_name}
