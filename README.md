@@ -4,8 +4,10 @@ Image Gallery immediately rated by favorites or comments
 
 ## usage
 
+1. `cp front/sample-env.ts front/env.ts`
+1. Edit `front/env.ts` properly
 1. Put your own pictures in `/front/public/pic`
-2. `docker compose up`
+1. `docker compose up`
 
 ## LICENSE
 
