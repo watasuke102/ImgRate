@@ -9,7 +9,6 @@ import {ErrorModal} from '@/components/ErrorModal';
 import {Loading} from '@/components/Loading';
 import {PictureCard} from '@/components/PictureCard';
 import {SetUserNameModal} from '@/components/SetUserNameModal';
-import {UserAvatar} from '@/components/UserAvatar';
 import {get_user_name} from '@/utils/LocalStorage';
 import {useUserComments, useUserFavorites} from '@/utils/api';
 import {EditIcon} from '@chakra-ui/icons';
