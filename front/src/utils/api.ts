@@ -8,7 +8,7 @@
 import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {get_user_name} from './LocalStorage';
-import {Comment, getSdk} from './graphql';
+import {Comment, Image, ImagesQuery, getSdk} from './graphql';
 
 export function useUserNames(): string[] | undefined {
   const [user_names, set_user_names] = React.useState<string[] | undefined>(undefined);
@@ -43,6 +43,12 @@ export interface UserComments {
   comments: Comment[];
   state: UserDataState;
   reflesh: () => void;
+}
+
+type ImageData = ImagesQuery['images'];
+export interface Images {
+  data: ImageData;
+  state: UserDataState;
 }
 
 export function useUserFavorites(): UserFavorites {
@@ -101,4 +107,28 @@ export function useUserComments(): UserComments {
     state: state,
     reflesh: () => set_cnt(i => i + 1),
   };
+}
+
+export function useImages(): Images {
+  const [data, set_data] = React.useState<ImageData>([]);
+  const [state, set_state] = React.useState<UserDataState>('loading');
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const client = new GraphQLClient('http://localhost:8080/query');
+        const sdk = getSdk(client);
+        const res = await sdk.Images();
+        if (res.images === null) {
+          throw Error;
+        }
+        set_data(res.images);
+        set_state('ok');
+      } catch {
+        set_state('err');
+      }
+    })();
+  }, []);
+
+  return {data, state};
 }

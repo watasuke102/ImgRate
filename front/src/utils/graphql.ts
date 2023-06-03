@@ -20,6 +20,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   comments: Array<Maybe<Comment>>;
+  images: Array<Image>;
   users: Array<Maybe<User>>;
 };
 
@@ -40,6 +41,13 @@ export type Comment = {
   created_at: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   user_name: Scalars['String']['output'];
+};
+
+export type Image = {
+  __typename?: 'Image';
+  comments: Array<Comment>;
+  favorite_cnt: Scalars['Int']['output'];
+  img_name: Scalars['String']['output'];
 };
 
 export type User = {
@@ -105,6 +113,11 @@ export type UserCommentsByNameQueryVariables = Exact<{
 
 export type UserCommentsByNameQuery = { __typename?: 'Query', comments: Array<{ __typename?: 'Comment', created_at: string, commented_to: string, comment: string } | null> };
 
+export type ImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ImagesQuery = { __typename?: 'Query', images: Array<{ __typename?: 'Image', img_name: string, favorite_cnt: number, comments: Array<{ __typename?: 'Comment', created_at: string, user_name: string, comment: string }> }> };
+
 export type CreateUserMutationVariables = Exact<{
   name: Scalars['String']['input'];
 }>;
@@ -153,6 +166,19 @@ export const UserCommentsByNameDocument = gql`
   }
 }
     `;
+export const ImagesDocument = gql`
+    query Images {
+  images {
+    img_name
+    favorite_cnt
+    comments {
+      created_at
+      user_name
+      comment
+    }
+  }
+}
+    `;
 export const CreateUserDocument = gql`
     mutation CreateUser($name: String!) {
   create_user(input: {user_name: $name})
@@ -184,6 +210,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     UserCommentsByName(variables: UserCommentsByNameQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UserCommentsByNameQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UserCommentsByNameQuery>(UserCommentsByNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UserCommentsByName', 'query');
+    },
+    Images(variables?: ImagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ImagesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ImagesQuery>(ImagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Images', 'query');
     },
     CreateUser(variables: CreateUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser', 'mutation');

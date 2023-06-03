@@ -18,6 +18,18 @@ query UserCommentsByName($name: String!) {
   }
 }
 
+query Images {
+  images {
+    img_name
+    favorite_cnt
+    comments {
+      created_at
+      user_name
+      comment
+    }
+  }
+}
+
 mutation CreateUser($name: String!) {
   create_user(input: { user_name: $name })
 }
