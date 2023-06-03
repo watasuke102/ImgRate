@@ -5,10 +5,8 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {ErrorModal} from '@/components/ErrorModal';
-import {Loading} from '@/components/Loading';
-import {PictureCard} from '@/components/PictureCard';
-import {SetUserNameModal} from '@/components/SetUserNameModal';
+import {ErrorModal, Loading} from '@/common';
+import {PictureCard, SetUserNameModal} from '@/components/User';
 import {get_user_name} from '@/utils/LocalStorage';
 import {useUserComments, useUserFavorites} from '@/utils/api';
 import {EditIcon} from '@chakra-ui/icons';
