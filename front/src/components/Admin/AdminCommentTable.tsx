@@ -7,7 +7,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {ImagesQuery} from '@/utils/graphql';
 import React from 'react';
-import {Box, Table, TableContainer, Tbody, Td, Th, Thead, Tr} from '@chakra-ui/react';
+import {Table, TableContainer, Tbody, Td, Th, Thead, Tr} from '@chakra-ui/react';
 
 interface Props {
   comments: ImagesQuery['images'][0]['comments'];

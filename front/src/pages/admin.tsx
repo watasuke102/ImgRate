@@ -8,7 +8,7 @@
 import {ErrorModal, Loading} from '@/common';
 import {AdminCommentTable, FavoriteStat} from '@/components/Admin';
 import {useImages} from '@/utils/api';
-import {Box, Card, CardBody, CardHeader, Flex, Heading, Image, SimpleGrid, Stack, Text} from '@chakra-ui/react';
+import {Card, CardBody, CardHeader, Heading, Image, SimpleGrid, Stack} from '@chakra-ui/react';
 import React from 'react';
 
 export default function Admin(): JSX.Element {

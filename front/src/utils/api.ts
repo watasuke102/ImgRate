@@ -8,7 +8,7 @@
 import {GraphQLClient} from 'graphql-request';
 import React from 'react';
 import {get_user_name} from './LocalStorage';
-import {Comment, Image, ImagesQuery, getSdk} from './graphql';
+import {Comment, ImagesQuery, getSdk} from './graphql';
 
 export function useUserNames(): string[] | undefined {
   const [user_names, set_user_names] = React.useState<string[] | undefined>(undefined);
