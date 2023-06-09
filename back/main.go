@@ -36,11 +36,19 @@ func main() {
 		AllowedOrigins: []string{"*"},
 	})
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+	})
+
+	http.Handle("/play", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", cors.Handler(srv))
 
 	log.Println("Listening http://localhost:8080")
-	log.Println("  /      : GraphQL playground")
+	log.Println("  /play  : GraphQL playground")
 	log.Println("  /query : GraphQL endpoint")
 	log.Fatalln(http.ListenAndServe(":8080", nil))
 }
